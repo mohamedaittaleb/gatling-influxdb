@@ -1,0 +1,38 @@
+version: "2"
+services:
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+      - "8090:8090"
+      - "2003:2003"
+    volumes:
+    #   # Data persistency
+    #   # sudo mkdir -p /srv/docker/influxdb/data
+      - /Users/nabil/projects/trash/gatling-influxdb/conf/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    links:
+      - influxdb
+  scope:
+    container_name: weave-scope
+    volumes:
+      - "/var/run/:/var/run:rw"
+    command:
+      - "--probe.docker"
+      - "true"
+    image: weaveworks/scope:latest
+    network_mode: "host"
+    pid: "host"
+    ports:
+      - "4040:4040"
+    privileged: true
+    tty: true
+    labels:
+      - "works.weave.role=system"
