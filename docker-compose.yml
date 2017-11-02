@@ -9,8 +9,6 @@ services:
       - "8090:8090"
       - "2003:2003"
     volumes:
-    #   # Data persistency
-    #   # sudo mkdir -p /srv/docker/influxdb/data
       - /Users/nabil/projects/trash/gatling-influxdb/conf/influxdb.conf:/etc/influxdb/influxdb.conf:ro
 
   grafana:
